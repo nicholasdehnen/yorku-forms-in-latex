@@ -18,7 +18,7 @@ jobs:
     - name: Update MikTeX
       run: |
         mpm --admin --update
-        miktex update-package-database
+        miktex packages update-package-database
         miktex packages update
 
     - name: Compile LaTeX documents
