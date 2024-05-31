@@ -15,11 +15,6 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Install LaTeX packages
-      run: |
-        miktex packages update
-        miktex packages install latex-tools makecell acrotext newtx microtype 
-
     - name: Compile LaTeX documents
       run: |
         mkdir output
