@@ -1,0 +1,186 @@
+\documentclass[10pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{tabularx} % Easy tables
+\usepackage{makecell} % Break table cells
+\usepackage{eforms} % Form fields
+\usepackage{newtxtext} % Times font
+\usepackage{microtype} % Squishing and stretching text
+
+% customize layout
+\setlength{\headsep}{0pt}
+\setlength{\topmargin}{0pt}
+\setlength{\textheight}{650pt}
+\setlength{\footskip}{0pt}
+
+% microtype sloppy expansion
+\SetExpansion[context=sloppy, shrink=100, step=5]{encoding = {OT1,T1,TS1} }{}
+
+% Ff-flag combination: DoNotScroll + DoNotSpellCheck
+% Can get away with addition here due to no carry-bits, should ideally be bitwise-OR
+\newcommand{\FfDoNotScrollDoNotSpellCheck}{\the\numexpr\FfDoNotSpellCheck+\FfDoNotScroll\relax}
+
+% Underlined text field
+\newcommand{\underlinedTextField}[1]{%
+    \textField[\Ff{\FfDoNotScrollDoNotSpellCheck}\textSize{0}\S{U}]{#1}{\dimexpr\linewidth}{1.5em}%
+}
+
+% Underlined signature field
+\newcommand{\underlinedSignatureField}[1]{%
+    %\sigField[\BC{0 0 0}\S{U}]{#1}{\dimexpr\linewidth}{1.5em}%
+    \underlinedTextField{#1} % passthrough, no digital ids at york (yet?)
+}
+
+% Invisible (no-border) text field
+\newcommand{\invisibleTextField}[2][1.5em]{%
+    \textField[\Ff{\FfDoNotScrollDoNotSpellCheck}\textSize{0}\W{0}]{#2}{\dimexpr\linewidth}{#1}%
+}
+\newcommand{\invisibleTextFieldCentered}[2][1.5em]{%
+    \textField[\Ff{\FfDoNotScrollDoNotSpellCheck}\textSize{0}\W{0}\Q{1}]{#2}{\dimexpr\linewidth}{#1}%
+}
+\newcommand{\invisibleTextFieldMultiLine}[2][1.5em]{%
+    \textField[\Ff{\FfMultiline}\textSize{0}\W{0}]{#2}{\dimexpr\linewidth}{#1}%
+}
+\newcommand{\invisibleTextFieldMultiLineCentered}[2][1.5em]{%
+    \textField[\Ff{\FfMultiline}\textSize{0}\W{0}\Q{1}]{#2}{\dimexpr\linewidth}{#1}%
+}
+
+% Invisible text field trio for duties table
+\newcommand{\possibleDutiesRowFields}[1]{%
+    \invisibleTextField[1.2em]{{#1}Details} & %
+    \invisibleTextFieldCentered[1.2em]{{#1}FirstMeeting} & %
+    \invisibleTextFieldCentered[1.2em]{{#1}SecondMeeting}%
+}
+
+% Form preview (disable for final build)
+%\previewOn
+
+\begin{document}
+    \pagenumbering{gobble}
+    \title{
+        \vspace{-50pt} % less space before title
+        \bfseries \large
+        Appendix A \\
+        TA WORKLOAD FORM -- \\
+        ASSIGNMENT OF DUTIES TO TEACHING ASSISTANTS \\
+        \itshape \small
+        {\microtypecontext{expansion=sloppy}(Original to Teaching Assistant, copy to Assistant to the Chair and Course Supervisor and CUPE 3903)}
+        \vspace{-55pt} % less space after title
+    }
+    \author{}
+    \date{}
+    \maketitle
+
+    %% Course and TA info
+    \begin{table}[h!]
+        \renewcommand{\arraystretch}{1.2}
+        \setlength{\tabcolsep}{0pt}
+        \begin{tabular}{p{0.45\textwidth}p{\dimexpr\textwidth-0.9\textwidth}p{0.45\textwidth}}
+            \underlinedTextField{courseDirector} && \underlinedTextField{course} \\
+            Course Supervisor  && Course \\
+
+            \underlinedTextField{teachingAssistant} && \underlinedTextField{taPosition} \\
+            Teaching Assistant && TA Position (e.g. Tutor, Grader etc.) \\
+
+            \underlinedTextField{noOfStudents} && \underlinedTextField{hiringUnit} \\
+            \makecell[lt]{Sec./Tut.\# and No. of Students\\Per group (where applicable)} && \makecell[lt]{Faculty/Hiring Unit}
+        \end{tabular}%
+    \end{table}%
+
+    %% Assigned duties (in hours)
+    %\vspace{-15pt}
+    \begin{center}
+        \bfseries \large
+        ASSIGNED DUTIES (AS TOTAL NUMBER OF HOURS) \\
+        \itshape \small
+        (TAs need not be assigned duties in all categories)
+    \end{center}%
+    \vspace{-15pt}
+    \begin{table}[h!]
+        \setlength{\tabcolsep}{0pt}
+        \begin{tabular}{p{0.3\textwidth}p{0.025\textwidth}p{0.35\textwidth}}
+            \textbf{1st MEETING DATE:} && \raisebox{4pt}{\underlinedTextField{firstMeetingDate}} \\
+            \textbf{2nd MEETING DATE:} && \raisebox{4pt}{\underlinedTextField{secondMeetingDate}}
+        \end{tabular}%
+    \end{table}%
+
+    %% Possible duties table
+    \vspace{-20pt}
+    \begin{table}[h!]
+        \renewcommand{\arraystretch}{1}
+        \begin{tabularx}{\textwidth}{|p{140pt}|X|p{35pt}|p{35pt}|}
+            \hline
+            % Table header: Section A
+            \multicolumn{1}{|l|}{\textbf{A) POSSIBLE DUTIES}} &
+            \multicolumn{1}{c|}{\textbf{Details}} &
+            \multicolumn{1}{c|}{\makecell{\textbf{Hours --} \\ \textbf{1st Mtg.}}} &
+            \multicolumn{1}{c|}{\makecell{\textbf{Hours --} \\ \textbf{2nd Mtg.}}} \\ \hline
+
+            % Table contents: Section A
+            \hline
+            Tutorial, Lab, Studio Hours & \possibleDutiesRowFields{tutorialHours} \\
+            \hline
+            Lecture Attendance & \possibleDutiesRowFields{lectureHours} \\
+            \hline
+            Office Hours & \possibleDutiesRowFields{officeHours} \\
+            \hline
+            Preparation & \possibleDutiesRowFields{prepHours} \\
+            \hline
+            Grading - Assignment/Test \#1 & \possibleDutiesRowFields{gradingHours1} \\
+            \hline
+            Grading - Assignment/Test \#2 & \possibleDutiesRowFields{gradingHours2} \\
+            \hline
+            Exam Grading & \possibleDutiesRowFields{examGradingHours} \\
+            \hline
+            Meetings & \possibleDutiesRowFields{meetingHours} \\
+            \hline
+            Invigilation & \possibleDutiesRowFields{invigilationHours} \\
+            \hline
+            Training (Up to 10 hours) & \possibleDutiesRowFields{trainingHours} \\
+            \hline
+            % Long field with custom field sizes: Email comms
+            Email communications where required for the proper instruction of the subject matter of the course {\small(e.g., computer skills and internet courses)}
+            & \raisebox{-20pt}{\invisibleTextFieldMultiLine[50pt]{emailCommsHoursDetails}}
+            & \raisebox{-20pt}{\invisibleTextFieldMultiLineCentered[50pt]{emailCommsHoursFirstMeeting}}
+            & \raisebox{-20pt}{\invisibleTextFieldMultiLineCentered[50pt]{emailCommsHoursSecondMeeting}} \\
+            \hline
+
+            % Table header: Section B
+            \multicolumn{4}{|l|}{\Gape[6pt][-2pt]{\textbf{B) POSSIBLE DUTIES WITH CONSENT}}} \\
+            \hline
+
+            % Table contents: Section B
+            Lecturing & \possibleDutiesRowFields{lecturingHours} \\
+            \hline
+            Email {\small(other than described above)} & \possibleDutiesRowFields{emailOtherHours} \\
+            \hline
+            Other {\small(please detail)} & \possibleDutiesRowFields{otherDetailHours} \\
+            \hline
+            Total hours {\small(Max. 270/Full TAship)} & \possibleDutiesRowFields{totalTaHours} \\
+            \hline
+        \end{tabularx}%
+    \end{table}%
+    % Signatures and dates
+    %\vspace{-8pt}
+    \noindent%
+    Please sign:\\[1pt]
+    \vspace{-1.5\baselineskip}
+    \begin{table}[h!]
+        \renewcommand{\arraystretch}{1.2}
+        \setlength{\tabcolsep}{0pt}
+        \begin{tabularx}{\textwidth}{p{0.12\textwidth}p{0.36\textwidth}Xp{0.12\textwidth}p{0.36\textwidth}}
+            \textbf{1st Mtg.} & \underlinedSignatureField{taSignatureFirstMeeting} &&
+            \textbf{1st Mtg.} & \underlinedSignatureField{courseDirectorSignatureFirstMeeting} \\
+            & \multicolumn{1}{c}{\small\textit{TEACHING ASSISTANT}} &&& \multicolumn{1}{c}{\small\textit{COURSE SUPERVISOR}} \\[3pt]
+            \textbf{2nd Mtg.} & \underlinedSignatureField{taSignatureSecondMeeting} &&
+            \textbf{2nd Mtg.} & \underlinedSignatureField{courseDirectorSignatureSecondMeeting} \\
+            & \multicolumn{1}{c}{\small\textit{TEACHING ASSISTANT}} &&& \multicolumn{1}{c}{\small\textit{COURSE SUPERVISOR}} \\
+        \end{tabularx}%
+        \vspace*{-20pt}%
+    \end{table}%
+    \\
+    \begin{description}
+        \item[\normalfont Note to TAs:]
+        \parbox[t]{0.8\textwidth}{If the time required to complete the duties does not correspond to the hours assigned, please notify the course supervisor.}
+    \end{description}
+
+\end{document}
