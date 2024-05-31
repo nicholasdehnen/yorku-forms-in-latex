@@ -15,6 +15,12 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
+    - name: Update MikTeX
+      run: |
+        mpm --admin --update
+        miktex update-package-database
+        miktex packages update
+
     - name: Compile LaTeX documents
       run: |
         mkdir output
